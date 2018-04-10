@@ -17,7 +17,7 @@ class Tarea {
         $query = "SELECT * FROM tarea WHERE usuario_id = ?";
         $ps    = Config::$dbh->prepare($query);
         $user_id = $user->getId();
-        $res   = $ps->execute(array(1));
+        $res   = $ps->execute(array($user_id));
         $result = array();
         if($res) {
             $result = $ps->fetchAll();
