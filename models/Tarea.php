@@ -41,6 +41,13 @@ class Tarea {
       
     }
 
+    public static function borrarTarea($id){
+        $query = "DELETE FROM tarea WHERE tarea_id = ?";
+        $ps    = Config::$dbh->prepare($query);
+        $res   = $ps->execute(array($id));
+
+    }
+
     function __construct($result_row) {
         $this->id          = $result_row["tarea_id"];
         $this->titulo      = $result_row["titulo"];

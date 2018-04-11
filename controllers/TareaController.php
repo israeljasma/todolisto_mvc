@@ -19,5 +19,11 @@ class TareaController {
         Tarea::agregarTarea($titulo, $desc, $user->getId(), $estado_id);        
         header('Location: ' . '/todolisto_mvc/mainController.php/tareas');
     }
+
+    public function borrarTarea($id){
+        $user = $_SESSION["user"];
+        Tarea::borrarTarea($id);
+        header('Location: ' . '/todolisto_mvc/mainController.php/tareas');
+    }
 }
 ?>
