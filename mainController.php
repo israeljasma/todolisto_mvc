@@ -21,6 +21,7 @@ Config::$dbh = new PDO($dir, $usuario, $password) or die ("Error en conexion a l
 $baseURL = dirname($_SERVER["REQUEST_URI"]);
 $url = $_SERVER["REQUEST_URI"];
 $path = substr($url, strlen($baseURL));
+$path = preg_replace('/\?.*/', '', $path);
 
 
 
@@ -82,10 +83,13 @@ switch($path) {
         $controller->agregarTarea($titulo, $desc, $estado_id);
         break;
     
-    /*
-    case '/tarea':        
+    
+    case '/borrarTarea':
+        require_login();
+        $controller = new TareaController();
+        $id    = $_GET["id"];
+        $controller->borrarTarea($id);
         break;
-    */
 
     /*
     case 'calendario':        
