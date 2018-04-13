@@ -91,6 +91,12 @@ switch($path) {
         $controller->borrarTarea($id);
         break;
 
+    case '/tarea':
+        require_login();
+        $controller = new TareaController();
+        $id    = $_GET["id"];
+        //$controller->detalleTarea($id);
+        break;
     /*
     case 'calendario':        
         break;
