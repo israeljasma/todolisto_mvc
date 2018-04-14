@@ -25,5 +25,19 @@ class TareaController {
         Tarea::borrarTarea($id);
         header('Location: ' . '/todolisto_mvc/mainController.php/tareas');
     }
+
+    public function mostrarTarea($tarea_id) {
+        $user = $_SESSION["user"];
+        $detallesTarea = Tarea::mostrarTarea($tarea_id);
+        $estados = EstadoTarea::getAll();
+        $nombre=null;
+        foreach($detallesTarea as $det) {
+            $nombre = EstadoTarea::getById($det->getEstado()->getId());
+        }
+        $estadoTarea = $nombre->getId();
+
+        $detallesTareaViews = new DetalleView();
+        echo $detallesTareaViews->render($tarea_id, $detallesTarea, $estadoTarea, $estados);
+    }
 }
 ?>
