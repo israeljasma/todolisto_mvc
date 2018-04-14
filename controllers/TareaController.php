@@ -2,6 +2,7 @@
 
 require("models/Tarea.php");
 require("views/Tareas.view.php");
+require("views/Detalle.view.php");
 
 class TareaController {
 
