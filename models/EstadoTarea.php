@@ -16,7 +16,7 @@ class EstadoTarea {
         $result = null;
         if($res) {
             $result = $ps->fetch();
-            $result = fromRowToEstado($result);
+            $result = EstadoTarea::fromRowToEstado($result);
         }
         return $result;
     }
