@@ -95,7 +95,7 @@ switch($path) {
         require_login();
         $controller = new TareaController();
         $id    = $_GET["id"];
-        $controller->detalleTarea($id);
+        $controller->mostrarTarea($id);
         break;
     /*
     case 'calendario':        
