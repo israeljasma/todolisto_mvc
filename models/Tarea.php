@@ -61,6 +61,21 @@ class Tarea {
         return $result;
     }
 
+    public static function actualizarTarea($tarea_id, $titulo, $descripcion, $user_id, $estado_id) {
+        $query = "UPDATE tarea 
+                  SET titulo =?,
+                  descripcion =?, 
+                  estado_id =? 
+                  WHERE tarea_id =?";
+        $ps    = Config::$dbh->prepare($query);
+        $res   = $ps->execute(array(
+                                $titulo,
+                                $descripcion,
+                                $estado_id,
+                                $tarea_id
+        ));
+    }
+
     function __construct($result_row) {
         $this->id          = $result_row["tarea_id"];
         $this->titulo      = $result_row["titulo"];
