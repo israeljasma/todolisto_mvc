@@ -97,6 +97,17 @@ switch($path) {
         $id    = $_GET["id"];
         $controller->mostrarTarea($id);
         break;
+
+    case '/editarTarea':
+        require_login();
+        $controller = new TareaController();
+        $tarea_id   = $_GET["id"];
+        $titulo     = $_POST["titulo"];
+        $desc       = $_POST["descripcion"];
+        $estado_id  = $_POST["estado_id"];
+        $controller->editarTarea($tarea_id, $titulo, $desc, $estado_id);
+        break;
+
     /*
     case 'calendario':        
         break;
