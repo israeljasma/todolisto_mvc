@@ -48,6 +48,19 @@ class Tarea {
 
     }
 
+    public static function mostrarTarea($id) {
+        $query = "SELECT * FROM tarea WHERE tarea_id = ?";
+        $ps    = Config::$dbh->prepare($query);
+        $res   = $ps->execute(array($id));
+        $result = array();
+        if($res) {
+            $result = $ps->fetchAll();
+            $result = array_map([Tarea::class, 'fromRowToTarea'], $result);
+        }
+
+        return $result;
+    }
+
     function __construct($result_row) {
         $this->id          = $result_row["tarea_id"];
         $this->titulo      = $result_row["titulo"];
