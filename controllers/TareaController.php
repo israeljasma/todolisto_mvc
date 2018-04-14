@@ -40,5 +40,11 @@ class TareaController {
         $detallesTareaViews = new DetalleView();
         echo $detallesTareaViews->render($tarea_id, $detallesTarea, $estadoTarea, $estados);
     }
+
+    public function editarTarea($tarea_id, $titulo, $desc, $estado_id) {
+        $user = $_SESSION["user"];
+        Tarea::actualizarTarea($tarea_id, $titulo, $desc, $user->getId(), $estado_id);        
+        header('Location: ' . '/todolisto_mvc/mainController.php/tareas');
+    }
 }
 ?>
