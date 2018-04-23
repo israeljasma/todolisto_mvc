@@ -1,12 +1,14 @@
 <?php 
 
 require("EstadoTarea.php");
+require("TipoTarea.php");
 
 class Tarea {
     private $id;
     private $titulo;
     private $descripcion;    
     private $estado;
+    private $tipo;
     private $usuario;
 
     private static function fromRowToTarea($row) {
@@ -27,25 +29,25 @@ class Tarea {
         return $result;        
     }
 
-    public static function agregarTarea($titulo, $descripcion, $user_id, $estado_id) {
+    public static function agregarTarea($titulo, $descripcion, $user_id, $estado_id, $tipo_id) {
         $query = "INSERT INTO tarea (titulo, descripcion, usuario_id, tipo_id, estado_id, fecha_inicio) VALUES (?, ?, ?, ?, ?, ?)";
         $ps    = Config::$dbh->prepare($query);
         $res   = $ps->execute(array(
                         $titulo,
                         $descripcion,
                         $user_id,
-                        null,                        
+                        $tipo_id,                        
                         $estado_id,
                         "2018-03-03"
         ));
       
     }
 
-    public static function borrarTarea($id){
-        $query = "DELETE FROM tarea WHERE tarea_id = ?";
+    public static function borrarTarea($tarea_id) {
+        $query = "DELETE FROM tarea WHERE tarea_id =".$tarea_id;
         $ps    = Config::$dbh->prepare($query);
-        $res   = $ps->execute(array($id));
-
+        $res   = $ps->execute(array());
+      
     }
 
     public static function mostrarTarea($id) {
@@ -61,19 +63,30 @@ class Tarea {
         return $result;
     }
 
-    public static function actualizarTarea($tarea_id, $titulo, $descripcion, $user_id, $estado_id) {
+/*    public static function obtenerTipo($id) {
+        $query = "SELECT nombre FROM tipo_tarea WHERE tipo_id=".$id;
+        $ps    = Config::$dbh->prepare($query);
+        $res   = $ps->execute(array(
+                        $nombre
+        ));
+    }*/
+
+    public static function actualizarTarea($tarea_id, $titulo, $descripcion, $user_id, $estado_id, $tipo_id) {
         $query = "UPDATE tarea 
                   SET titulo =?,
                   descripcion =?, 
-                  estado_id =? 
+                  estado_id =?,
+                  tipo_id =?
                   WHERE tarea_id =?";
         $ps    = Config::$dbh->prepare($query);
         $res   = $ps->execute(array(
                                 $titulo,
                                 $descripcion,
                                 $estado_id,
+                                $tipo_id,
                                 $tarea_id
         ));
+      
     }
 
     function __construct($result_row) {
@@ -81,7 +94,8 @@ class Tarea {
         $this->titulo      = $result_row["titulo"];
         $this->descripcion = $result_row["descripcion"];        
         $this->estado      = $result_row["estado_id"];
-        $this->usuario     = $result_row["usuario_id"];        
+        $this->tipo        = $result_row["tipo_id"];
+        $this->usuario     = $result_row["usuario_id"];       
     }
 
     public function getId() {
@@ -93,7 +107,7 @@ class Tarea {
     }
 
     public function setTitulo($titulo) {
-        $this->titulo = titulo;
+        $this->titulo = $titulo;
     }
 
     public function getDescripcion() {
@@ -101,12 +115,17 @@ class Tarea {
     }
 
     public function setDescripcion($descripcion) {
-        $this->descripcion = descripcion;
+        $this->descripcion = $descripcion;
     }
     
     public function getEstado() {
         return EstadoTarea::getById($this->estado);
     }
+
+    public function getTipo() {
+        return TipoTarea::getById($this->tipo);
+    }
+
 }
 
 ?>
