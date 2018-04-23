@@ -27,7 +27,7 @@ class Usuario {
     }
 
     public function getRol() {
-        return $this->nombre;
+        return $this->rol;
     }
 
     public static function findByUsername($username) {
@@ -43,6 +43,22 @@ class Usuario {
             }
         } 
 
+        return $result;
+    }
+
+    private static function fromRowToUsuario($row) {
+        return new Usuario($row);
+    }
+
+    public static function getAllUsers(){
+        $query = "SELECT * FROM usuario";
+        $ps    = Config::$dbh->prepare($query);
+        $res   = $ps->execute(array());
+        $result = array();
+        if($res) {
+            $result = $ps->fetchAll();
+            $result = array_map([Usuario::class, 'fromRowToUsuario'], $result);
+        }
         return $result;
     }
 }
