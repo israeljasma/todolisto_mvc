@@ -16,6 +16,7 @@ class LoginController {
         if($user != null) {
             $_SESSION["username"] = $username;
             $_SESSION["user"] = $user;
+            $_SESSION["rol"] = $user->getRol();
             header('Location: ' . '/todolisto_mvc/mainController.php/tareas');            
         } else {
             echo "No se encontro el usuario con el nombre indicado";
