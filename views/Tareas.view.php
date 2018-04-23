@@ -8,7 +8,11 @@ class TareasView {
                 <title>Todo Listo! / <?php echo $_SESSION["username"];?></title>
             </head>
             <body>   
-                <a href="/todolisto_mvc/mainController.php/logout">Cerrar Sesión</a>         
+                <a href="/todolisto_mvc/mainController.php/logout">Cerrar Sesión</a>
+                <?php
+                if($_SESSION["rol"] == "1"){ ?>
+                    <a href="/todolisto_mvc/mainController.php/adminTask">Vista Administrador</a>
+                <?php } ?>
                 <h1>Todo Listo!</h1>
                 <h2>Crear Tarea</h2>
 

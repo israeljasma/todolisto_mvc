@@ -9,7 +9,8 @@ class AdminTaskView {
                 <title>Todo Listo! / <?php echo $_SESSION["username"];?></title>
             </head>
             <body>   
-                <a href="/todolisto_mvc/mainController.php/logout">Cerrar Sesión</a>         
+                <a href="/todolisto_mvc/mainController.php/logout">Cerrar Sesión</a>
+                <a href="/todolisto_mvc/mainController.php/tareas">Vista normal</a>         
                 <h1>Todo Listo!</h1>
                 <h2>Tareas Usuarios</h2>
                 <table style="border: 1px solid black; border-collapse: collapse;">
