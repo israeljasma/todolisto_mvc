@@ -34,7 +34,10 @@ function require_login() {
 }
 
 function require_admin_login() {
-    /* POR IMPLEMENTAR */
+    if($_SESSION["rol"] == "1")
+        return isset($_SESSION["username"]);
+    else
+        return die("Requiere usuario administrador");
 }
 
 
@@ -44,6 +47,7 @@ function require_admin_login() {
 
 require("controllers/LoginController.php");
 require("controllers/TareaController.php");
+require("controllers/AdminController.php");
 
 session_start();
 $controller = null;
@@ -77,25 +81,30 @@ switch($path) {
     case '/nuevaTarea':
         require_login();
         $controller = new TareaController();        
-        $titulo    = $_POST["titulo"];
-        $desc      = $_POST["descripcion"];
-        $estado_id = $_POST["estado_id"];        
-        $controller->agregarTarea($titulo, $desc, $estado_id);
+        $titulo     = $_POST["titulo"];
+        $desc       = $_POST["descripcion"];
+        $estado_id  = $_POST["estado_id"];
+        if($_POST["tipo_id"] == "otroTipo"){
+            $nombreTipo = $_POST["nuevoTipo"];
+            $controller->agregarTareaYTipo($titulo, $desc, $estado_id, $nombreTipo);
+            break;
+        }
+        $tipo_id    = $_POST["tipo_id"];
+        $controller->agregarTarea($titulo, $desc, $estado_id, $tipo_id);
         break;
-    
     
     case '/borrarTarea':
         require_login();
-        $controller = new TareaController();
-        $id    = $_GET["id"];
-        $controller->borrarTarea($id);
+        $controller = new TareaController();        
+        $tarea_id   = $_GET["id"];   
+        $controller->borrarTarea($tarea_id);
         break;
-
+    
     case '/tarea':
         require_login();
         $controller = new TareaController();
-        $id    = $_GET["id"];
-        $controller->mostrarTarea($id);
+        $tarea_id   = $_GET["id"];
+        $controller->mostrarTarea($tarea_id);      
         break;
 
     case '/editarTarea':
@@ -104,8 +113,20 @@ switch($path) {
         $tarea_id   = $_GET["id"];
         $titulo     = $_POST["titulo"];
         $desc       = $_POST["descripcion"];
+        $tipo_id    = $_POST["tipo_id"];
         $estado_id  = $_POST["estado_id"];
-        $controller->editarTarea($tarea_id, $titulo, $desc, $estado_id);
+        if($_POST["tipo_id"] == "otroTipo"){
+            $nombreTipo = $_POST["nuevoTipo"];
+            $controller->editarTareaYTipo($tarea_id, $titulo, $desc, $estado_id, $nombreTipo);
+            break;
+        }
+        $controller->editarTarea($tarea_id, $titulo, $desc, $estado_id, $tipo_id);
+        break;
+
+    case '/adminTask':
+        require_admin_login();
+        $controller = new adminController();
+        $controller->mostrarUsuariosYTareas();
         break;
 
     /*
