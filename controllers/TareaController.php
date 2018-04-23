@@ -10,20 +10,28 @@ class TareaController {
         $user = $_SESSION["user"];        
         $tareas = Tarea::getAllUserTareas($user);        
         $estados = EstadoTarea::getAll();
+        $tipos = TipoTarea::getAll();
 
         $tareasViews = new TareasView();
-        echo $tareasViews->render($tareas, $estados);
+        echo $tareasViews->render($tareas, $estados, $tipos);
     }
     
-    public function agregarTarea($titulo, $desc, $estado_id) {
+    public function agregarTarea($titulo, $desc, $estado_id, $tipo_id) {
         $user = $_SESSION["user"];
-        Tarea::agregarTarea($titulo, $desc, $user->getId(), $estado_id);        
+        Tarea::agregarTarea($titulo, $desc, $user->getId(), $estado_id, $tipo_id);        
         header('Location: ' . '/todolisto_mvc/mainController.php/tareas');
     }
 
-    public function borrarTarea($id){
+    public function agregarTareaYTipo($titulo, $desc, $estado_id, $nombreTipo) {
         $user = $_SESSION["user"];
-        Tarea::borrarTarea($id);
+        $tipo_id = TipoTarea::agregarTipo($nombreTipo);
+        Tarea::agregarTarea($titulo, $desc, $user->getId(), $estado_id, $tipo_id);        
+        header('Location: ' . '/todolisto_mvc/mainController.php/tareas');
+    }
+
+    public function borrarTarea($tarea_id) {
+        $user = $_SESSION["user"];
+        Tarea::borrarTarea($tarea_id);        
         header('Location: ' . '/todolisto_mvc/mainController.php/tareas');
     }
 
@@ -31,19 +39,28 @@ class TareaController {
         $user = $_SESSION["user"];
         $detallesTarea = Tarea::mostrarTarea($tarea_id);
         $estados = EstadoTarea::getAll();
-        $nombre=null;
+        $tipos = TipoTarea::getAll();
         foreach($detallesTarea as $det) {
-            $nombre = EstadoTarea::getById($det->getEstado()->getId());
+            $estadoTarea = EstadoTarea::getById($det->getEstado()->getId());
+            $tipoTarea = TipoTarea::getById($det->getTipo()->getId());
         }
-        $estadoTarea = $nombre->getId();
+        $estadoTarea = $estadoTarea->getId();
+        $tipoTarea = $tipoTarea->getId();
 
         $detallesTareaViews = new DetalleView();
-        echo $detallesTareaViews->render($tarea_id, $detallesTarea, $estadoTarea, $estados);
+        echo $detallesTareaViews->render($tarea_id, $detallesTarea, $estadoTarea, $estados, $tipoTarea, $tipos);
     }
 
-    public function editarTarea($tarea_id, $titulo, $desc, $estado_id) {
+    public function editarTarea($tarea_id, $titulo, $desc, $estado_id, $tipo_id) {
         $user = $_SESSION["user"];
-        Tarea::actualizarTarea($tarea_id, $titulo, $desc, $user->getId(), $estado_id);        
+        Tarea::actualizarTarea($tarea_id, $titulo, $desc, $user->getId(), $estado_id, $tipo_id);        
+        header('Location: ' . '/todolisto_mvc/mainController.php/tareas');
+    }
+
+    public function editarTareaYTipo($tarea_id, $titulo, $desc, $estado_id, $nombreTipo) {
+        $user = $_SESSION["user"];
+        $tipo_id = TipoTarea::agregarTipo($nombreTipo);
+        Tarea::actualizarTarea($tarea_id, $titulo, $desc, $user->getId(), $estado_id, $tipo_id);        
         header('Location: ' . '/todolisto_mvc/mainController.php/tareas');
     }
 }
