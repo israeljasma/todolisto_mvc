@@ -72,7 +72,10 @@ class DetalleView {
                         </tr>
                     </form>
                 </table>
-
+                <br>
+                <button>
+                    <a href="todolisto_mvc/mainController.php/tareas">Volver a tareas</a> 
+                </button> 
             </body>
         </html>
 

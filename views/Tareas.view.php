@@ -59,7 +59,9 @@ class TareasView {
                         <tr>
                             <th>Titulo</th>
                             <th>Descripcion</th>
-                            <th></th>
+                            <th>
+                                <a href="/todolisto_mvc/mainController.php/calendario"> Ver Calendario </a> 
+                            </th>
                         </tr>
                         <?php foreach($paramTareas as $tarea) { ?>
                         <tr>
