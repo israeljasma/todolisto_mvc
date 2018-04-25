@@ -3,6 +3,7 @@
 require("models/Tarea.php");
 require("views/Tareas.view.php");
 require("views/Detalle.view.php");
+require("views/Calendar.view.php");
 
 class TareaController {
 
@@ -15,10 +16,18 @@ class TareaController {
         $tareasViews = new TareasView();
         echo $tareasViews->render($tareas, $estados, $tipos);
     }
+
+    public function tareas_calendario(){
+        $user = $_SESSION["user"];        
+        $tareas = Tarea::getAllUserTareas($user);        
+      
+        $calendarViews = new CalendarView();
+        echo $calendarViews->render($tareas);
+    }
     
-    public function agregarTarea($titulo, $desc, $estado_id, $tipo_id) {
+    public function agregarTarea($titulo, $desc, $estado_id, $tipo_id, $hoy) {
         $user = $_SESSION["user"];
-        Tarea::agregarTarea($titulo, $desc, $user->getId(), $estado_id, $tipo_id);        
+        Tarea::agregarTarea($titulo, $desc, $user->getId(), $estado_id, $tipo_id, $hoy);        
         header('Location: ' . '/todolisto_mvc/mainController.php/tareas');
     }
 
