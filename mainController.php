@@ -84,13 +84,14 @@ switch($path) {
         $titulo     = $_POST["titulo"];
         $desc       = $_POST["descripcion"];
         $estado_id  = $_POST["estado_id"];
+        $hoy = date("y-m-d");
         if($_POST["tipo_id"] == "otroTipo"){
             $nombreTipo = $_POST["nuevoTipo"];
             $controller->agregarTareaYTipo($titulo, $desc, $estado_id, $nombreTipo);
             break;
         }
         $tipo_id    = $_POST["tipo_id"];
-        $controller->agregarTarea($titulo, $desc, $estado_id, $tipo_id);
+        $controller->agregarTarea($titulo, $desc, $estado_id, $tipo_id, $hoy);
         break;
     
     case '/borrarTarea':
